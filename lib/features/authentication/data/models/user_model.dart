@@ -1,42 +1,21 @@
-
 import 'package:chat_app/features/authentication/domain/entities/user.dart';
 
-class UserModel extends User{
+class UserModel extends UserDomain{
   UserModel({
-    required int id,
-    required String username,
-    required String password,
-    required String email,
-    required String name,
+    required String phoneNumber,
   }) : super(
-    id: id,
-    username: username,
-    password: password,
-    email: email,
-    name: name,
+    phoneNumber: phoneNumber,
   );
-  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-    id: json['id'],
-    username: json['username'],
-    password: json['password'],
-    email: json['email'],
-    name: json['name'],
-  );
-  factory UserModel.fromEntity(User user) => UserModel(
-    id: user.id,
-    username: user.username,
-    password: user.password,
-    email: user.email,
-    name: user.name,
-  );
-  @override
-  Map<String, dynamic>toJson(){
+
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      phoneNumber: json['phoneNumber'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'username': username,
-      'password': password,
-      'email': email,
-      'name': name,
+      'phoneNumber': phoneNumber,
     };
   }
 }

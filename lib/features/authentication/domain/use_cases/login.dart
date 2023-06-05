@@ -1,11 +1,13 @@
-import 'package:chat_app/features/authentication/domain/entities/user.dart';
-import 'package:chat_app/features/authentication/domain/repositories/user_repository.dart';
+import 'package:chat_app/features/authentication/domain/repositories/authentication_repository.dart';
 
-class LoginUseCase{
-  final UserRepository userRepository;
-  LoginUseCase(this.userRepository);
+class AuthenticationUseCase{
+  final AuthenticationRepository authenticationRepository;
+  AuthenticationUseCase(this.authenticationRepository);
 
-  Future<User> execute(String email, String password) async{
-    return await userRepository.signInWithEmailAndPassword(email, password);
+  Future<void> signInWithPhoneNumber(String phone) async{
+    return await authenticationRepository.signInWithPhoneNumber(phone);
+  }
+  Future<void> signInWithVerificationCode(String phone) async{
+    return await authenticationRepository.signInWithVerificationCode(phone);
   }
 }
