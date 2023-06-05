@@ -19,12 +19,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
- // final _streamChatClient = StreamChatClient("b67pax5b2wdq", logLevel: Level.INFO);
- // await _streamChatClient.connectUser(User(id: "id"), "token");
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   UseCaseConfig useCaseConfig = UseCaseConfig();
+
+
   runApp(MyApp(
     useCaseConfig: useCaseConfig,
   ));
@@ -33,10 +33,12 @@ void main() async {
 class MyApp extends StatelessWidget {
   final UseCaseConfig useCaseConfig;
   MyApp({super.key, required this.useCaseConfig});
-  final _streamChatClient = StreamChatClient("b67pax5b2wdq");
+
+  final _streamChatClient = StreamChatClient("xabr8bm33ppw");
   void connectFakeUser() async {
     await _streamChatClient.disconnectUser();
-    _streamChatClient.connectUser(User(id: "Mota"), "Mota");
+    _streamChatClient.connectUser(User(id: "1252729"),
+        "b85amnjqnsgnfxa5vkzmvyyggbxcrcbxtrs5qpmrukvnsnqvqp2n6r2a9a3utcrc");
   }
 
   @override
@@ -44,13 +46,12 @@ class MyApp extends StatelessWidget {
     connectFakeUser();
     return MultiBlocProvider(
       providers: [
-       /* BlocProvider<AuthenticationBloc>(
+        /* BlocProvider<AuthenticationBloc>(
           create: (context) =>
               AuthenticationBloc(useCaseConfig.authenticationUseCase!),
         ),*/
         BlocProvider<ChangeAppTheme>(
-            create: (context) => ChangeAppTheme()..changeTheme()
-        ),
+            create: (context) => ChangeAppTheme()..changeTheme()),
         BlocProvider<SplashCubit>(
           create: (context) => SplashCubit()..execute(),
         ),
@@ -64,31 +65,31 @@ class MyApp extends StatelessWidget {
           create: (context) => NavigationCubit(),
         ),
         BlocProvider(
-            create:(context) => SettingsSwitchCubit(context.read<ChangeAppTheme>().state),
+          create: (context) =>
+              SettingsSwitchCubit(context.read<ChangeAppTheme>().state),
         )
       ],
-
-      child: BlocBuilder<ChangeAppTheme, bool>(
-        builder: (context,state) {
-          return MaterialApp(
-            title: 'Flutter Demo',
-            debugShowCheckedModeBanner: false,
-            home: const SplashView(),
-            theme: state ? ThemeData.dark(useMaterial3: true) : ThemeData.light(useMaterial3: true),
-            builder: (context, child) {
-              return StreamChat(client: _streamChatClient, child: child!);
-            },
-            routes: {
-              "/login": (context) => const LoginPage(),
-              "/welcome": (context) => const Welcome(),
-              "/navigation": (context) => const NavigationPage(),
-              "/home": (context) => const Home(),
-              "/chat": (context) => const ChatPage(),
-              // Agrega más rutas aquí
-            },
-          );
-        }
-      ),
+      child: BlocBuilder<ChangeAppTheme, bool>(builder: (context, state) {
+        return MaterialApp(
+          title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
+          home: const SplashView(),
+          theme: state
+              ? ThemeData.dark(useMaterial3: true)
+              : ThemeData.light(useMaterial3: true),
+          builder: (context, child) {
+            return StreamChat(client: _streamChatClient, child: child!);
+          },
+          routes: {
+            "/login": (context) => const LoginPage(),
+            "/welcome": (context) => const Welcome(),
+            "/navigation": (context) => const NavigationPage(),
+            "/home": (context) => const Home(),
+            "/chat": (context) => const ChatPage(),
+            // Agrega más rutas aquí
+          },
+        );
+      }),
     );
   }
 }

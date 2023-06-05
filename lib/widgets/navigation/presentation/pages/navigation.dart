@@ -13,36 +13,42 @@ class NavigationPage extends StatelessWidget {
     final screens = [const Home(), const ChatPage(), const SettingsPage()];
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Based Chat"),
-        automaticallyImplyLeading: false,
-      ),
-      bottomNavigationBar:
-          BlocBuilder<NavigationCubit, int>(builder: (context, state) {
-        return BottomNavigationBar(
-          currentIndex: context.read<NavigationCubit>().state,
-          onTap: (index) {
-            context.read<NavigationCubit>().changePage(index);
+        appBar: AppBar(
+          title: const Text("Based Chat"),
+          automaticallyImplyLeading: false,
+        ),
+        bottomNavigationBar:
+            BlocBuilder<NavigationCubit, int>(builder: (context, state) {
+          return BottomNavigationBar(
+            currentIndex: context.read<NavigationCubit>().state,
+            onTap: (index) {
+              context.read<NavigationCubit>().changePage(index);
+            },
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: "Home",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.chat),
+                label: "Chat",
+              ),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.settings), label: "Settings")
+            ],
+          );
+        }),
+        body: BlocBuilder<NavigationCubit, int>(builder: (context, state) {
+          return IndexedStack(
+            index: context.read<NavigationCubit>().state,
+            children: screens,
+          );
+        }),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            context.read<NavigationCubit>().changePage(1);
           },
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "Home",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.chat),
-              label: "Chat",
-            ),
-            BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Settings")
-          ],
-        );
-      }),
-      body: BlocBuilder<NavigationCubit, int>(builder: (context, state) {
-        return IndexedStack(
-          index: context.read<NavigationCubit>().state,
-          children: screens,
-        );
-      }),
-    );
+          child: const Icon(Icons.add),
+        ));
   }
 }
