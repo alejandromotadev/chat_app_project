@@ -1,6 +1,6 @@
-import 'package:chat_app/features/chat/presentation/pages/chat_page.dart';
-import 'package:chat_app/features/home/presentation/pages/home.dart';
-import 'package:chat_app/features/settings/presentation/pages/settings.dart';
+import 'package:chat_app/presentation/chat/presentation/pages/chat_page.dart';
+import 'package:chat_app/presentation/settings/presentation/pages/settings.dart';
+import 'package:chat_app/routes/navigator_utils.dart';
 import 'package:chat_app/widgets/navigation/presentation/cubits/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +10,7 @@ class NavigationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screens = [const Home(), const ChatPage(), const SettingsPage()];
+    final screens = [const ChatPage(), const SettingsPage()];
 
     return Scaffold(
         appBar: AppBar(
@@ -30,10 +30,6 @@ class NavigationPage extends StatelessWidget {
                 label: "Home",
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.chat),
-                label: "Chat",
-              ),
-              BottomNavigationBarItem(
                   icon: Icon(Icons.settings), label: "Settings")
             ],
           );
@@ -46,9 +42,9 @@ class NavigationPage extends StatelessWidget {
         }),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            context.read<NavigationCubit>().changePage(1);
+            pushToPage(context, "/friend_selection");
           },
-          child: const Icon(Icons.add),
+          child: const Icon(Icons.chat),
         ));
   }
 }
