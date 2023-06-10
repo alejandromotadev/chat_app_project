@@ -17,9 +17,9 @@ class _WelcomeState extends State<Welcome> {
     return BlocConsumer<WelcomeVerifyCubit, WelcomeState>(
         listener: (context, state) {
       if (state.success == true) {
-        pushToPageWithReplacement(context, "/navigation");
+        pushToPage(context, "/navigation");
       }
-    }, builder: (context, snapshot) {
+    }, builder: (context, state) {
       return Scaffold(
         appBar: AppBar(
           title: const Text("Based Chat"),
@@ -36,19 +36,24 @@ class _WelcomeState extends State<Welcome> {
                 children: [
                   const Text("Welcome to BasedChat",
                       style: TextStyle(fontSize: 16)),
-                  Placeholder(
-                    fallbackHeight: 100,
-                  ),
+                  if (state.file != null)
+                    Image.file(state.file, height: 100, width: 100)
+                  else
+                    const Placeholder(
+                      fallbackHeight: 100,
+                    ),
                   IconButton(
                       onPressed: () {
                         context.read<WelcomeVerifyCubit>().pickImage();
                       },
-                      icon: const  Icon(Icons.photo)),
+                      icon: const Icon(Icons.photo)),
                   const Text("Please enter an username",
                       style: TextStyle(fontSize: 14)),
-                  const TextField(
-                    controller: null,
-                    decoration: InputDecoration(hintText: "Enter your name"),
+                  TextField(
+                    controller:
+                        context.read<WelcomeVerifyCubit>().usernameController,
+                    decoration:
+                        const InputDecoration(hintText: "Enter your name"),
                   ),
                   ElevatedButton(
                     onPressed: () {

@@ -5,19 +5,24 @@ import 'package:chat_app/data/authentification/repositories/auth_repository.dart
 import 'package:chat_app/data/stream_api/repositories/stream_api_repository.dart';
 import 'package:chat_app/domain/chat/entities/chat_user.dart';
 
-class ProfileSignInUseCase{
-  ProfileSignInUseCase(this._authRepository, this._streamApiRepository, this._uploadStorageRepository);
+class ProfileSignInUseCase {
+  ProfileSignInUseCase(this._authRepository, this._streamApiRepository,
+      this._uploadStorageRepository);
   final AuthRepository _authRepository;
   final StreamApiRepository _streamApiRepository;
   final UploadStorageRepository _uploadStorageRepository;
 
-  Future<void>verify(ProfileInput input) async{
-    //await _streamApiRepository.connectUser(ChatUser(id: "0", name: input.name, image: null), token)
+  Future<void> verify(ProfileInput input) async {
+    final auth = await _authRepository.getAuthUser();
+    final token = await _streamApiRepository.getToken(auth.id);
+    final image = await _uploadStorageRepository.uploadPhoto(input.imageFile, "users/${auth.id}");
+    await _streamApiRepository.connectUser(
+        ChatUser(id: auth.id, name: input.name, image: image), token);
   }
 }
 
 class ProfileInput {
-  ProfileInput(this.imageFile, this.name);
+  ProfileInput({required this.imageFile, required this.name});
   final File imageFile;
   final String name;
 }

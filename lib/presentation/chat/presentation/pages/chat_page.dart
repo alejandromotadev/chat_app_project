@@ -15,7 +15,7 @@ class ChatPage extends StatelessWidget {
         body: StreamChannel(
           channel: channel,
           child: Column(
-            children: const [
+            children:  [
               Expanded(
                 child: StreamMessageListView(),
               ),
@@ -26,3 +26,5 @@ class ChatPage extends StatelessWidget {
     );
   }
 }
+
+

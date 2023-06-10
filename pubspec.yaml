@@ -47,6 +47,8 @@ dependencies:
   video_thumbnail: ^0.5.3
   image_picker: ^0.8.7+5
   uuid: ^3.0.7
+  google_sign_in: ^6.1.4
+  firebase_storage: ^11.2.2
 
 dev_dependencies:
   flutter_test:

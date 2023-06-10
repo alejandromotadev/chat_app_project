@@ -10,9 +10,7 @@ class ChatUserState{
 }
 
 class GroupSelectionState{
-  //const GroupSelectionState();
-  //const GroupSelectionState(this.file, {this.channel});
-
-//final File file;
-  //final StreamChannel channel;
+  const GroupSelectionState(this.file, {required this.channel});
+  final File file;
+  final Channel channel;
 }

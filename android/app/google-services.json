@@ -12,7 +12,12 @@
           "package_name": "com.aamotadev.chat_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "210138464587-dj6ookbelkiboeo2r68viaj3e5a7oqml.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAg5r2cj0JPeff2Gqug82hfTG_e81JqkGE"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "210138464587-dj6ookbelkiboeo2r68viaj3e5a7oqml.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "210138464587-c1i9qkfu4ft202u8mqvs75314k7kik8o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.aamotadev.chatApp"
+              }
+            }
+          ]
         }
       }
     }

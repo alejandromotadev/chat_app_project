@@ -1,21 +1,24 @@
+import 'dart:io';
 import 'package:bloc/bloc.dart';
-import 'package:chat_app/domain/chat/entities/chat_user.dart';
+import 'package:chat_app/data/image_picker/repositories/image_picker_repository.dart';
+import 'package:chat_app/data/stream_api/repositories/stream_api_repository.dart';
+import 'package:chat_app/domain/chat/use_cases/group_use_case.dart';
 import 'package:chat_app/presentation/chat/presentation/cubit/chat_state.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class FriendSelectionCubit extends Cubit<List<ChatUserState>> {
-  FriendSelectionCubit() : super([]);
+  FriendSelectionCubit(this._streamApiRepository) : super([]);
+  final StreamApiRepository _streamApiRepository;
 
   List<ChatUserState> get selectedUsers =>
       state.where((ChatUserState e) => e.selected).toList();
 
   Future<void> init() async {
     //final List<ChatUserState> newState = state.map((ChatUserState e) => e.chatUser.id == chatUserState.chatUser.id ? ChatUserState(chatUserState.chatUser, selected: !chatUserState.selected) : e).toList();
-    final list = List.generate(
-        10,
-        (index) => ChatUserState(
-            ChatUser(id: index.toString(), name: "User: $index", image: "https://picsum.photos/200/300")));
+    final list = (await _streamApiRepository.getChatUsers())
+        .map((e) => ChatUserState(e))
+        .toList();
     emit(list);
   }
 
@@ -27,9 +30,10 @@ class FriendSelectionCubit extends Cubit<List<ChatUserState>> {
     emit(List<ChatUserState>.from(state));
   }
 
-  Future<Channel> createChannel(ChatUserState chatUserState) async {
-    //TODO: Create a channel with the selected users
-    throw UnimplementedError();
+  Future<Channel> createFriendChannel(ChatUserState chatUserState) async {
+    final channel =
+        _streamApiRepository.createSimpleChat(chatUserState.chatUser.id);
+    return channel;
   }
 }
 
@@ -44,15 +48,33 @@ class FriendsGroupCubit extends Cubit<bool> {
 class GroupSelectionCubit extends Cubit<GroupSelectionState> {
   GroupSelectionCubit(
     this.members,
-  ) : super(GroupSelectionState());
+    this._createGroupUseCase,
+    this._imagePickerRepository,
+  ) : super(GroupSelectionState(File(""),
+            channel: Channel(
+              StreamChatClient(""),
+              "",
+              "",
+            )));
   final List<ChatUserState> members;
-  final groupNameController = TextEditingController();
+  final nameTextController = TextEditingController();
+  final CreateGroupUseCase _createGroupUseCase;
+  final ImagePickerRepository _imagePickerRepository;
 
   void createGroup() async {
-    emit(GroupSelectionState());
+    final channel = await _createGroupUseCase.createGroup(
+      CreateGroupInput(
+        imageFile: state.file,
+        name: nameTextController.text,
+        members: members.map((e) => e.chatUser.id).toList(),
+      ),
+    );
+    emit(GroupSelectionState(state.file, channel: channel));
   }
 
   void pickImage() async {
-    emit(GroupSelectionState());
+    final image = await _imagePickerRepository.pickImage();
+    emit(GroupSelectionState(image, channel: state.channel));
   }
+
 }

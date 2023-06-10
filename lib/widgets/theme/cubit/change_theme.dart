@@ -12,6 +12,7 @@ class AppThemeCubit extends Cubit<bool> {
     emit(_isDark);
   }
   Future<void>updateTheme(bool isDarkMode) async{
+    //update theme
     _isDark = isDarkMode;
     await persistentStorageRepository.updateDarkMode(isDarkMode);
     emit(_isDark);
