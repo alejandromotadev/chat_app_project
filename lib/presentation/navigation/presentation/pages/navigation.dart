@@ -20,12 +20,12 @@ class NavigationPage extends StatelessWidget {
     ];
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Based Chat"),
-          automaticallyImplyLeading: false,
-        ),
-        bottomNavigationBar:
-            BlocBuilder<NavigationCubit, int>(builder: (context, state) {
+      appBar: AppBar(
+        title: const Text("Based Chat"),
+        automaticallyImplyLeading: false,
+      ),
+      bottomNavigationBar: BlocBuilder<NavigationCubit, int>(
+        builder: (context, state) {
           return BottomNavigationBar(
             currentIndex: context.read<NavigationCubit>().state,
             onTap: (index) {
@@ -40,18 +40,23 @@ class NavigationPage extends StatelessWidget {
                   icon: Icon(Icons.settings), label: "Settings")
             ],
           );
-        }),
-        body: BlocBuilder<NavigationCubit, int>(builder: (context, state) {
+        },
+      ),
+      body: BlocBuilder<NavigationCubit, int>(
+        builder: (context, state) {
           return IndexedStack(
             index: context.read<NavigationCubit>().state,
             children: screens,
           );
-        }),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            pushToPage(context, "/friend_selection");
-          },
-          child: const Icon(Icons.chat),
-        ));
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          pushToPage(context, "/friend_selection");
+        },
+        backgroundColor: Colors.blueAccent,
+        child: const Icon(Icons.chat),
+      ),
+    );
   }
 }

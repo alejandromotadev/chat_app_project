@@ -29,42 +29,135 @@ class GroupSelectionPage extends StatelessWidget {
       }
     }, builder: (context, snapshot) {
       return Scaffold(
+        appBar: AppBar(
+          title: const Text("Create a group"),
+          actions: [
+            IconButton(
+              onPressed: () {
+                context.read<GroupSelectionCubit>().createGroup();
+              },
+              icon: const Icon(Icons.check),
+            )
+          ],
+        ),
         body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Group Selection Page"),
-                snapshot.file != null ? Image.file(snapshot.file, height: 100,)
-                : Placeholder(fallbackHeight: 100, fallbackWidth: 100,),
-                IconButton(
-                    onPressed: () {
-                      context.read<GroupSelectionCubit>().pickImage();
-                    },
-                    icon: Icon(Icons.photo)),
-                TextField(
-                  controller:
-                      context.read<GroupSelectionCubit>().nameTextController,
-                  decoration: InputDecoration(
-                    hintText: "Group name",
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "It's time to create a group",
+                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
                   ),
-                ),
-                Wrap(
-                  children: List.generate(
-                    selectedUsers.length,
-                    (index) => Column(children: [
-                      CircleAvatar(),
-                      Text(selectedUsers[index].chatUser.name)
-                    ]),
+                  const Text(
+                    "Please select a group image and a name for your group",
+                    style: TextStyle(fontSize: 16),
+                    textAlign: TextAlign.center,
                   ),
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      context.read<GroupSelectionCubit>().createGroup();
+                  const SizedBox(height: 20),
+                  Image.file(
+                    snapshot.file,
+                    height: 150,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Stack(
+                        children: [
+                          Container(
+                            height: 180,
+                            width: 180,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[400],
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: const Icon(Icons.group_add_rounded,
+                                size: 100, color: Colors.grey),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.white,
+                              child: IconButton(
+                                onPressed: () {
+                                  context
+                                      .read<GroupSelectionCubit>()
+                                      .pickImage();
+                                },
+                                icon: const Icon(
+                                  Icons.camera_alt_rounded,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
                     },
-                    child: const Text("Create Group"))
-              ],
+                  ),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 8.0),
+                    child: TextField(
+                      controller: context
+                          .read<GroupSelectionCubit>()
+                          .nameTextController,
+                      decoration: const InputDecoration(
+                          hintText: "Enter a nice name for your group",
+                          border: InputBorder.none),
+                    ),
+                  ),
+                  Wrap(
+                    children: List.generate(
+                      selectedUsers.length,
+                      (index) => Column(children: [
+                        CircleAvatar(
+                          backgroundImage:
+                              NetworkImage(selectedUsers[index].chatUser.image),
+                          backgroundColor: Colors.blueAccent[400],
+                        ),
+                        Text(selectedUsers[index].chatUser.name)
+                      ]),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      if(context.read<GroupSelectionCubit>().nameTextController.text.isNotEmpty){
+                        context.read<GroupSelectionCubit>().createGroup();
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Please enter a name for your group"),
+                          ),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(180, 50),
+                      maximumSize: const Size(200, 50),
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Row(
+                      children: const [
+                         Icon(
+                          Icons.group_add_rounded,
+                          color: Colors.black,
+                        ),
+                        SizedBox(width: 20),
+                         Text(
+                          "Create Group",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),

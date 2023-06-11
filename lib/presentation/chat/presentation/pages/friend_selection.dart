@@ -31,11 +31,14 @@ class FriendSelectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FriendsGroupCubit, bool>(builder: (context, isGroup) {
-      return BlocBuilder<FriendSelectionCubit, List<ChatUserState>>(builder: (context, state) {
-        final selectedUsers = context.read<FriendSelectionCubit>().selectedUsers;
+      return BlocBuilder<FriendSelectionCubit, List<ChatUserState>>(
+          builder: (context, state) {
+        final selectedUsers =
+            context.read<FriendSelectionCubit>().selectedUsers;
         return Scaffold(
           floatingActionButton: isGroup && selectedUsers.isNotEmpty
               ? FloatingActionButton(
+            backgroundColor: Colors.blueAccent,
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -84,11 +87,20 @@ class FriendSelectionPage extends StatelessWidget {
                   ),
                 if (!isGroup)
                   ListTile(
-                    leading: const Icon(Icons.group),
+                    leading: const CircleAvatar(
+                      backgroundColor: Colors.blueAccent,
+                      maxRadius: 20,
+                      child: Icon(
+                        Icons.group,
+                        size: 25,
+                        color: Colors.white,
+                      ),
+                    ),
                     title: const Text("New Group"),
                     onTap: () {
                       context.read<FriendsGroupCubit>().changeState();
                     },
+                    hoverColor: Colors.blueAccent.withOpacity(0.2),
                   )
                 else if (isGroup && selectedUsers.isEmpty)
                   Column(
@@ -105,21 +117,44 @@ class FriendSelectionPage extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         final chatUserState = selectedUsers[index];
-                        return Column(
-                          children: [
-                            CircleAvatar(
-                              child: IconButton(
-                                icon: const Icon(Icons.close, size: 15),
-                                onPressed: () {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 10),
+                          child: Column(
+                            children: [
+                              InkWell(
+                                onTap: () {
                                   context
                                       .read<FriendSelectionCubit>()
                                       .selectUser(chatUserState);
                                 },
-                                alignment: Alignment.bottomRight,
+                                child: Stack(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundColor: Colors.grey,
+                                      backgroundImage: NetworkImage(
+                                          chatUserState.chatUser.image),
+                                      radius: 30,
+                                    ),
+                                    const Positioned(
+                                      right: 0,
+                                      bottom: 0,
+                                      child: CircleAvatar(
+                                        backgroundColor: Colors.red,
+                                        radius: 15,
+                                        child: Icon(
+                                          Icons.close_rounded,
+                                          color: Colors.white,
+                                          size: 15,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Text(chatUserState.chatUser.name),
-                          ],
+                              Text(chatUserState.chatUser.name),
+                            ],
+                          ),
                         );
                       },
                     ),
@@ -131,11 +166,16 @@ class FriendSelectionPage extends StatelessWidget {
                       final chatUserState = state[index];
                       return ListTile(
                         leading: CircleAvatar(
+                          backgroundColor: Colors.grey,
                           backgroundImage:
-                             chatUserState.chatUser.image != null ? NetworkImage(chatUserState.chatUser.image)
-                                  : const NetworkImage("https://api.dicebear.com/6.x/adventurer/svg?seed=Smokey")
+                              NetworkImage(chatUserState.chatUser.image),
                         ),
-                        title: Text(chatUserState.chatUser.name),
+                        title: Text(
+                          chatUserState.chatUser.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontSize: 16),
+                        ),
                         onTap: () {
                           isGroup
                               ? context

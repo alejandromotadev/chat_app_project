@@ -19,15 +19,13 @@ class SettingsPage extends StatelessWidget {
           children: [
             Column(
               children: [
-                if (image != null)
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage: NetworkImage(image.toString()),
-                  )
-                else
-                  const Placeholder(
-                    fallbackHeight: 100,
-                  ),
+                CircleAvatar(
+                  radius: 50,
+                  backgroundImage: NetworkImage(image.toString()),
+                  onBackgroundImageError: (exception, stackTrace) {
+                    Image.asset("assets/images/user.png");
+                  },
+                ),
                 const SizedBox(height: 10),
                 Text(user?.name ?? ""),
               ],
@@ -64,7 +62,15 @@ class SettingsPage extends StatelessWidget {
                 onPressed: () {
                   context.read<SettingsLogoutCubit>().logout();
                 },
-                child: const Text("Logout"),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(200, 50),
+                  maximumSize: const Size(300, 50),
+                  backgroundColor: Colors.red,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: const Text("Logout", style: TextStyle(color: Colors.white)),
               ),
               listener: (context, state) {
                 pushToPage(context, "/login");
