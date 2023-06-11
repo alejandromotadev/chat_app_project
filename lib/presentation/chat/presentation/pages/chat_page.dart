@@ -3,28 +3,56 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({Key? key}) : super(key: key);
+  
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: StreamChannelHeader(),
+      body: Column(
+        children: [
+          Expanded(
+            child: (StreamMessageListView(
+              threadBuilder: (_, parentMessage) {
+                return ThreadPage(
+                  parent: parentMessage,
+                );
+              },
+            )),
+          ),
+           StreamMessageInput(),
+        ],
+      ),
+    );
+  }
+
+}
+
+class ThreadPage extends StatelessWidget {
+  const ThreadPage({
+    Key? key,
+    this.parent,
+  }) : super(key: key);
+
+  final Message? parent;
 
   @override
   Widget build(BuildContext context) {
-    final client = StreamChatClient(
-      "xabr8bm33ppw",
-      logLevel: Level.INFO,
-    );
-    final channel = client.channel("messaging", id: "1252729");
     return Scaffold(
-        body: StreamChannel(
-          channel: channel,
-          child: Column(
-            children:  [
-              Expanded(
-                child: StreamMessageListView(),
-              ),
-              StreamMessageInput(),
-            ],
+      appBar: StreamThreadHeader(
+        parent: parent!,
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: StreamMessageListView(
+              parentMessage: parent,
+            ),
           ),
-        )
+          StreamMessageInput(
+
+          ),
+        ],
+      ),
     );
   }
 }
-
-

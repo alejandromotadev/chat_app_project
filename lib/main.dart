@@ -4,13 +4,14 @@ import 'package:chat_app/presentation/authentication/presentation/pages/login_pa
 import 'package:chat_app/presentation/chat/presentation/cubit/chat_cubit.dart';
 import 'package:chat_app/presentation/chat/presentation/pages/chat_page.dart';
 import 'package:chat_app/presentation/chat/presentation/pages/friend_selection.dart';
+import 'package:chat_app/presentation/home/pages/home.dart';
+import 'package:chat_app/presentation/navigation/presentation/cubits/navigation.dart';
+import 'package:chat_app/presentation/navigation/presentation/pages/navigation.dart';
 import 'package:chat_app/presentation/settings/presentation/cubit/settings_cubit.dart';
 import 'package:chat_app/presentation/splash_view/presentation/cubit/splash_cubit.dart';
 import 'package:chat_app/presentation/splash_view/presentation/pages/splash_view.dart';
 import 'package:chat_app/presentation/welcome/presentation/cubit/welcome_cubit.dart';
 import 'package:chat_app/presentation/welcome/presentation/pages/welcome.dart';
-import 'package:chat_app/widgets/navigation/presentation/cubits/navigation.dart';
-import 'package:chat_app/widgets/navigation/presentation/pages/navigation.dart';
 import 'package:chat_app/widgets/theme/cubit/change_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -29,7 +30,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
-  final _streamChatClient = StreamChatClient("xabr8bm33ppw", logLevel: Level.ALL );
+  final _streamChatClient = StreamChatClient("xabr8bm33ppw", logLevel: Level.INFO );
 
   @override
   Widget build(BuildContext context) {
@@ -83,10 +84,10 @@ class MyApp extends StatelessWidget {
             routes: {
               "/login": (context) => const LoginPage(),
               "/welcome": (context) => const Welcome(),
-              "/navigation": (context) => const NavigationPage(),
-              "/home": (context) => const ChatPage(),
+              "/navigation": (context) =>  NavigationPage(client: _streamChatClient,),
+              "/home": (context) => HomePage(client: _streamChatClient,),
               "/chat": (context) => const ChatPage(),
-              "/friend_selection": (context) => const FriendSelectionPage(),
+              "/friend_selection": (context) =>  FriendSelectionPage(client: _streamChatClient,),
               // Agrega más rutas aquí
             },
           );

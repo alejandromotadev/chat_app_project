@@ -11,11 +11,9 @@ class FriendSelectionCubit extends Cubit<List<ChatUserState>> {
   FriendSelectionCubit(this._streamApiRepository) : super([]);
   final StreamApiRepository _streamApiRepository;
 
-  List<ChatUserState> get selectedUsers =>
-      state.where((ChatUserState e) => e.selected).toList();
+  List<ChatUserState> get selectedUsers => state.where((ChatUserState e) => e.selected).toList();
 
   Future<void> init() async {
-    //final List<ChatUserState> newState = state.map((ChatUserState e) => e.chatUser.id == chatUserState.chatUser.id ? ChatUserState(chatUserState.chatUser, selected: !chatUserState.selected) : e).toList();
     final list = (await _streamApiRepository.getChatUsers())
         .map((e) => ChatUserState(e))
         .toList();
@@ -23,10 +21,8 @@ class FriendSelectionCubit extends Cubit<List<ChatUserState>> {
   }
 
   void selectUser(ChatUserState chatUser) {
-    final index = state
-        .indexWhere((ChatUserState e) => e.chatUser.id == chatUser.chatUser.id);
-    state[index] =
-        ChatUserState(state[index].chatUser, selected: !chatUser.selected);
+    final index = state.indexWhere((ChatUserState e) => e.chatUser.id == chatUser.chatUser.id);
+    state[index] = ChatUserState(state[index].chatUser, selected: !chatUser.selected);
     emit(List<ChatUserState>.from(state));
   }
 

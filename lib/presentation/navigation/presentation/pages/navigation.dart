@@ -1,16 +1,23 @@
-import 'package:chat_app/presentation/chat/presentation/pages/chat_page.dart';
+import 'package:chat_app/presentation/home/pages/home.dart';
+import 'package:chat_app/presentation/navigation/presentation/cubits/navigation.dart';
 import 'package:chat_app/presentation/settings/presentation/pages/settings.dart';
 import 'package:chat_app/routes/navigator_utils.dart';
-import 'package:chat_app/widgets/navigation/presentation/cubits/navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class NavigationPage extends StatelessWidget {
-  const NavigationPage({Key? key}) : super(key: key);
+  const NavigationPage({Key? key, required this.client}) : super(key: key);
+  final StreamChatClient client;
 
   @override
   Widget build(BuildContext context) {
-    final screens = [const ChatPage(), const SettingsPage()];
+    final screens = [
+      HomePage(
+        client: client,
+      ),
+      const SettingsPage()
+    ];
 
     return Scaffold(
         appBar: AppBar(

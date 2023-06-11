@@ -12,6 +12,7 @@ class SplashCubit extends Cubit<SplashState> {
     await Future.delayed(const Duration(milliseconds: 70));
     try {
       final result = await _loginUseCase.validateLogin();
+      print("result: $result");
       if (result) emit(SplashState.existing_user);
       print("SplashCubit.executed existing_user");
     } on AuthException catch (e) {

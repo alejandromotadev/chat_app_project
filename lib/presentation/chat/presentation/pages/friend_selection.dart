@@ -8,10 +8,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class FriendSelectionPage extends StatelessWidget {
-  const FriendSelectionPage({Key? key}) : super(key: key);
-  void _createFriendChannel(BuildContext context, ChatUserState chatUserState) async {
-    final channel =
-        await context.read<FriendSelectionCubit>().createFriendChannel(chatUserState);
+  const FriendSelectionPage({Key? key, required this.client}) : super(key: key);
+  final StreamChatClient client;
+
+  void _createFriendChannel(
+      BuildContext context, ChatUserState chatUserState) async {
+    final channel = await context
+        .read<FriendSelectionCubit>()
+        .createFriendChannel(chatUserState);
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => Scaffold(
@@ -26,21 +30,33 @@ class FriendSelectionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    late final userListController = StreamUserListController(
+      client: client,
+      limit: 20,
+      sort: [const SortOption("name", direction: 1)],
+      filter: Filter.and(
+        [
+          Filter.notEqual(
+              'id', StreamChat.of(context).currentUser!.id)
+        ],
+      ),
+    );
+
     return BlocBuilder<FriendsGroupCubit, bool>(builder: (context, isGroup) {
-      return BlocBuilder<FriendSelectionCubit, List<ChatUserState>>(
-          builder: (context, state) {
-        final selectedUsers =
-            context.read<FriendSelectionCubit>().selectedUsers;
+      return BlocBuilder<FriendSelectionCubit, List<ChatUserState>>(builder: (context, state) {
+        final selectedUsers = context.read<FriendSelectionCubit>().selectedUsers;
         return Scaffold(
           floatingActionButton: isGroup && selectedUsers.isNotEmpty
               ? FloatingActionButton(
                   onPressed: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => GroupSelectionPage(
-                                  selectedUsers: selectedUsers,
-                                )));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GroupSelectionPage(
+                          selectedUsers: selectedUsers,
+                        ),
+                      ),
+                    );
                   },
                   child: const Icon(Icons.arrow_forward),
                 )
@@ -80,8 +96,8 @@ class FriendSelectionPage extends StatelessWidget {
                   ),
                 if (!isGroup)
                   ListTile(
-                    leading: Icon(Icons.group),
-                    title: Text("New Group"),
+                    leading: const Icon(Icons.group),
+                    title: const Text("New Group"),
                     onTap: () {
                       context.read<FriendsGroupCubit>().changeState();
                     },
@@ -105,7 +121,7 @@ class FriendSelectionPage extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               child: IconButton(
-                                icon: Icon(Icons.close, size: 15),
+                                icon: const Icon(Icons.close, size: 15),
                                 onPressed: () {
                                   context
                                       .read<FriendSelectionCubit>()
@@ -122,6 +138,12 @@ class FriendSelectionPage extends StatelessWidget {
                     ),
                   ),
                 Expanded(
+                  /*child: StreamUserListView(
+                    controller: userListController,
+                    onUserTap: (user) {
+                      print("user tap");
+                    },
+                  ),*/
                   child: ListView.builder(
                     itemCount: state.length,
                     itemBuilder: (context, index) {
