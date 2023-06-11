@@ -3,11 +3,11 @@ import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({Key? key}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: StreamChannelHeader(),
+      appBar: const StreamChannelHeader(),
       body: Column(
         children: [
           Expanded(
@@ -19,12 +19,11 @@ class ChatPage extends StatelessWidget {
               },
             )),
           ),
-           StreamMessageInput(),
+          const StreamMessageInput(),
         ],
       ),
     );
   }
-
 }
 
 class ThreadPage extends StatelessWidget {
@@ -48,9 +47,7 @@ class ThreadPage extends StatelessWidget {
               parentMessage: parent,
             ),
           ),
-          StreamMessageInput(
-
-          ),
+          const StreamMessageInput(),
         ],
       ),
     );

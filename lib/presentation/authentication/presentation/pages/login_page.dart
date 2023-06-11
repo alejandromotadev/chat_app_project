@@ -26,18 +26,39 @@ class _LoginPageState extends State<LoginPage> {
       builder: (context, state) {
         return Scaffold(
           body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Login Page"),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  child: const Text("Sign in"),
-                  onPressed: () {
-                    context.read<AuthenticationCubit>().signIn();
-                  },
-                )
-              ],
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Welcome to BasedChat",
+                      style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+                  const Text("A nice platform to chat with your friends",
+                      style: TextStyle(fontSize: 16)),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(200, 50),
+                      maximumSize: const Size(300, 50),
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () {
+                      context.read<AuthenticationCubit>().signIn();
+                    },
+                    child:  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset( "assets/images/google.png", height: 30, width: 30),
+                        const SizedBox(width: 15),
+                        const Text("Login with Google", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400)),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         );

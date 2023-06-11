@@ -21,7 +21,7 @@ class FriendSelectionPage extends StatelessWidget {
         builder: (_) => Scaffold(
           body: StreamChannel(
             channel: channel,
-            child: ChatPage(),
+            child: const ChatPage(),
           ),
         ),
       ),
@@ -30,18 +30,6 @@ class FriendSelectionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    late final userListController = StreamUserListController(
-      client: client,
-      limit: 20,
-      sort: [const SortOption("name", direction: 1)],
-      filter: Filter.and(
-        [
-          Filter.notEqual(
-              'id', StreamChat.of(context).currentUser!.id)
-        ],
-      ),
-    );
-
     return BlocBuilder<FriendsGroupCubit, bool>(builder: (context, isGroup) {
       return BlocBuilder<FriendSelectionCubit, List<ChatUserState>>(builder: (context, state) {
         final selectedUsers = context.read<FriendSelectionCubit>().selectedUsers;
@@ -126,7 +114,6 @@ class FriendSelectionPage extends StatelessWidget {
                                   context
                                       .read<FriendSelectionCubit>()
                                       .selectUser(chatUserState);
-                                  print("delete user");
                                 },
                                 alignment: Alignment.bottomRight,
                               ),
@@ -138,12 +125,6 @@ class FriendSelectionPage extends StatelessWidget {
                     ),
                   ),
                 Expanded(
-                  /*child: StreamUserListView(
-                    controller: userListController,
-                    onUserTap: (user) {
-                      print("user tap");
-                    },
-                  ),*/
                   child: ListView.builder(
                     itemCount: state.length,
                     itemBuilder: (context, index) {
@@ -151,7 +132,8 @@ class FriendSelectionPage extends StatelessWidget {
                       return ListTile(
                         leading: CircleAvatar(
                           backgroundImage:
-                              NetworkImage(chatUserState.chatUser.image),
+                             chatUserState.chatUser.image != null ? NetworkImage(chatUserState.chatUser.image)
+                                  : const NetworkImage("https://api.dicebear.com/6.x/adventurer/svg?seed=Smokey")
                         ),
                         title: Text(chatUserState.chatUser.name),
                         onTap: () {
