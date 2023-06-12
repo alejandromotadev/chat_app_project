@@ -10,9 +10,9 @@ import 'package:chat_app/presentation/navigation/presentation/pages/navigation.d
 import 'package:chat_app/presentation/settings/presentation/cubit/settings_cubit.dart';
 import 'package:chat_app/presentation/splash_view/presentation/cubit/splash_cubit.dart';
 import 'package:chat_app/presentation/splash_view/presentation/pages/splash_view.dart';
+import 'package:chat_app/presentation/theme/cubit/change_theme.dart';
 import 'package:chat_app/presentation/welcome/presentation/cubit/welcome_cubit.dart';
 import 'package:chat_app/presentation/welcome/presentation/pages/welcome.dart';
-import 'package:chat_app/widgets/theme/cubit/change_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';

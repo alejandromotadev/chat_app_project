@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:chat_app/data/stream_api/repositories/stream_api_repository.dart';
 import 'package:chat_app/domain/chat/entities/chat_user.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
@@ -26,7 +28,6 @@ class StreamApiImpl implements StreamApiRepository {
 
   @override
   Future<List<ChatUser>> getChatUsers() async {
-    //TODO: RESOLVER EL QUERY USERS
     final result = await _client.queryUsers(
       filter: Filter.notEqual("id", _client.state.currentUser!.id),
     );
@@ -47,6 +48,12 @@ class StreamApiImpl implements StreamApiRepository {
   @override
   Future<String> getToken(String userId) async {
     //TODO: Implement getToken
+    final response = await http.post( Uri( ) , body: jsonEncode(<String, String>{"user_id": userId}),
+      headers: <String, String>{
+        "Content-Type": "application/json; charset=UTF-8",
+      }
+    );
+    //final token = jsonDecode(response.body)["token"];
     final token =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoibW90YSJ9.krN1CjYQWHTBa4gZ2cwwyjh-1XhFSMSITkbUtZj5mU0";
     return token;
