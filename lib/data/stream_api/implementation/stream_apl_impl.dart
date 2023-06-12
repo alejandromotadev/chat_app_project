@@ -94,8 +94,10 @@ class StreamApiImpl implements StreamApiRepository {
   @override
   Future<bool> connectIfExist(String userId) async {
     final token = await getToken(userId);
-    await _client.connectUser(User(id: userId),
-        token);
-    return _client.state.currentUser != null;
+    await _client.connectUser(User(id: userId), token);
+    if (_client.state.currentUser == null) {
+      return false;
+    }
+    return  _client.state.currentUser != null;
   }
 }
