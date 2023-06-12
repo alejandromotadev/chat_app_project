@@ -15,14 +15,17 @@ import 'package:chat_app/domain/stream_api/repositories/stream_api_repository.da
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
-List<RepositoryProvider> buildRepositories(StreamChatClient client){
+List<RepositoryProvider> buildRepositories(StreamChatClient client) {
   return [
-    RepositoryProvider<StreamApiRepository>(create: (context) => StreamApiImpl(client)),
-    RepositoryProvider<PersistentStorageRepository>(create: (context) => PersistentStorageImpl()),
+    RepositoryProvider<StreamApiRepository>(
+        create: (context) => StreamApiImpl(client)),
+    RepositoryProvider<PersistentStorageRepository>(
+        create: (context) => PersistentStorageImpl()),
     RepositoryProvider<AuthRepository>(create: (context) => AuthImpl()),
-    RepositoryProvider<UploadStorageRepository>(create: (context) => UploadStorageImpl()),
-    RepositoryProvider<ImagePickerRepository>(create: (context) => ImagePickerImpl()),
-
+    RepositoryProvider<UploadStorageRepository>(
+        create: (context) => UploadStorageImpl()),
+    RepositoryProvider<ImagePickerRepository>(
+        create: (context) => ImagePickerImpl()),
     RepositoryProvider<LoginUseCase>(
       create: (context) => LoginUseCase(
         context.read(),
@@ -36,11 +39,8 @@ List<RepositoryProvider> buildRepositories(StreamChatClient client){
       ),
     ),
     RepositoryProvider<ProfileSignInUseCase>(
-      create: (context) => ProfileSignInUseCase(
-        context.read(),
-        context.read(),
-        context.read()
-      ),
+      create: (context) =>
+          ProfileSignInUseCase(context.read(), context.read(), context.read()),
     ),
     RepositoryProvider<CreateGroupUseCase>(
       create: (context) => CreateGroupUseCase(
