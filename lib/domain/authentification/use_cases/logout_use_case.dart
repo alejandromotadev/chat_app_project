@@ -7,7 +7,7 @@ class LogoutUseCase{
   final AuthRepository authRepository;
 
   Future<void> logout() async{
-    await streamApiRepository.logout();
+    await streamApiRepository.logoutStreamChat();
     await authRepository.logout();
   }
 }

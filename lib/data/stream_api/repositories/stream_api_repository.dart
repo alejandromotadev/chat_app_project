@@ -8,5 +8,5 @@ abstract class StreamApiRepository{
   Future<ChatUser> connectUser(ChatUser user, String token);
   Future<Channel> createGroupChat(String channelId, String name, List<String> members, String imageUrl);
   Future<Channel> createSimpleChat(String friendId);
-  Future<void> logout();
+  Future<void> logoutStreamChat();
 }

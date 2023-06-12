@@ -48,14 +48,15 @@ class StreamApiImpl implements StreamApiRepository {
   @override
   Future<String> getToken(String userId) async {
     //TODO: Implement getToken
-    final response = await http.post( Uri( ) , body: jsonEncode(<String, String>{"user_id": userId}),
+    print("User ID =========>>>>>>>>>>>>>>$userId");
+    final response = await http.post( Uri.http("10.0.2.2:1709", "/token") , body: jsonEncode(<String, String>{"id": userId}),
       headers: <String, String>{
         "Content-Type": "application/json; charset=UTF-8",
       }
     );
-    //final token = jsonDecode(response.body)["token"];
-    final token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoibW90YSJ9.krN1CjYQWHTBa4gZ2cwwyjh-1XhFSMSITkbUtZj5mU0";
+    final token = jsonDecode(response.body)["token"];
+    print("Token ==========>>>>>>>>>>>>>>>$token");
+    //final token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoibW90YSJ9.krN1CjYQWHTBa4gZ2cwwyjh-1XhFSMSITkbUtZj5mU0";
     return token;
   }
 
@@ -86,7 +87,7 @@ class StreamApiImpl implements StreamApiRepository {
   }
 
   @override
-  Future<void> logout() {
+  Future<void> logoutStreamChat() {
     return _client.disconnectUser();
   }
 

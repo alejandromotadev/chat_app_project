@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthImpl extends AuthRepository{
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
   @override
   Future<AuthUser> getAuthUser() async{
     final user = _auth.currentUser;
@@ -37,6 +38,7 @@ class AuthImpl extends AuthRepository{
 
   @override
   Future<void> logout() async{
-    return await _auth.signOut();
+    await _googleSignIn.signOut();
+    await _auth.signOut();
   }
 }
