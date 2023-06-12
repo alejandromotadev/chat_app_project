@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:bloc/bloc.dart';
-import 'package:chat_app/data/image_picker/repositories/image_picker_repository.dart';
-import 'package:chat_app/data/stream_api/repositories/stream_api_repository.dart';
 import 'package:chat_app/domain/chat/use_cases/group_use_case.dart';
+import 'package:chat_app/domain/image_picker/repositories/image_picker_repository.dart';
+import 'package:chat_app/domain/stream_api/repositories/stream_api_repository.dart';
 import 'package:chat_app/presentation/chat/presentation/cubit/chat_state.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
@@ -58,19 +58,32 @@ class GroupSelectionCubit extends Cubit<GroupSelectionState> {
   final ImagePickerRepository _imagePickerRepository;
 
   void createGroup() async {
-    final channel = await _createGroupUseCase.createGroup(
-      CreateGroupInput(
-        imageFile: state.file,
-        name: nameTextController.text,
-        members: members.map((e) => e.chatUser.id).toList(),
-      ),
-    );
-    emit(GroupSelectionState(state.file, channel: channel));
+    print("create group");
+    try{
+      final channel = await _createGroupUseCase.createGroup(
+        CreateGroupInput(
+          imageFile: state.file,
+          name: nameTextController.text,
+          members: members.map((e) => e.chatUser.id).toList(),
+        ),
+      );
+      emit(GroupSelectionState(state.file, channel: channel));
+      print("channel created");
+    } catch (e) {
+      print(e);
+    }
+
   }
 
   void pickImage() async {
-    final image = await _imagePickerRepository.pickImage();
-    emit(GroupSelectionState(image, channel: state.channel));
+    try{
+      print("pick image chat cubit");
+      final image = await _imagePickerRepository.pickImage();
+      emit(GroupSelectionState(image, channel: state.channel));
+    } catch (e) {
+      print(e);
+    }
+
   }
 
 }

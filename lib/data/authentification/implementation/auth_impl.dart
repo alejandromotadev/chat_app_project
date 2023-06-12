@@ -1,6 +1,6 @@
 import 'package:chat_app/data/authentification/helpers/auth_exception.dart';
-import 'package:chat_app/data/authentification/repositories/auth_repository.dart';
 import 'package:chat_app/domain/authentification/entities/auth_user.dart';
+import 'package:chat_app/domain/authentification/repositories/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 

@@ -13,9 +13,10 @@ class GroupSelectionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool buttonPressed = false;
     return BlocConsumer<GroupSelectionCubit, GroupSelectionState>(
         listener: (context, state) {
-      if (state.channel != null) {
+      if (buttonPressed) {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => Scaffold(
@@ -31,14 +32,6 @@ class GroupSelectionPage extends StatelessWidget {
       return Scaffold(
         appBar: AppBar(
           title: const Text("Create a group"),
-          actions: [
-            IconButton(
-              onPressed: () {
-                context.read<GroupSelectionCubit>().createGroup();
-              },
-              icon: const Icon(Icons.check),
-            )
-          ],
         ),
         body: Center(
           child: SingleChildScrollView(
@@ -57,6 +50,7 @@ class GroupSelectionPage extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 20),
+
                   Image.file(
                     snapshot.file,
                     height: 150,
@@ -124,14 +118,19 @@ class GroupSelectionPage extends StatelessWidget {
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      if(context.read<GroupSelectionCubit>().nameTextController.text.isNotEmpty){
-                        context.read<GroupSelectionCubit>().createGroup();
-                      } else {
+                      if(context
+                          .read<GroupSelectionCubit>()
+                          .nameTextController
+                          .text
+                          .isEmpty || snapshot.file.path.isEmpty){
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text("Please enter a name for your group"),
+                            content: Text("Please select a group image and a name for your group"),
                           ),
                         );
+                      } else{
+                        buttonPressed = true;
+                        context.read<GroupSelectionCubit>().createGroup();
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -144,12 +143,12 @@ class GroupSelectionPage extends StatelessWidget {
                     ),
                     child: Row(
                       children: const [
-                         Icon(
+                        Icon(
                           Icons.group_add_rounded,
                           color: Colors.black,
                         ),
                         SizedBox(width: 20),
-                         Text(
+                        Text(
                           "Create Group",
                           style: TextStyle(color: Colors.black),
                         ),

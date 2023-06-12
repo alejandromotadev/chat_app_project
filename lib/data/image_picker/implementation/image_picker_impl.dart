@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:chat_app/data/image_picker/repositories/image_picker_repository.dart';
+import 'package:chat_app/domain/image_picker/repositories/image_picker_repository.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImagePickerImpl extends ImagePickerRepository{

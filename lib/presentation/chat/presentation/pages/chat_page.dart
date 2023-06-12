@@ -1,3 +1,4 @@
+import 'package:chat_app/routes/navigator_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
@@ -7,7 +8,12 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const StreamChannelHeader(),
+      appBar:  StreamChannelHeader(
+        showBackButton: true,
+        onBackPressed: (){
+          pushToPageWithReplacement(context, '/home');
+        },
+      ),
       body: Column(
         children: [
           Expanded(

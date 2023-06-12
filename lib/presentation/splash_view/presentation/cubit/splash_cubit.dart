@@ -10,13 +10,19 @@ class SplashCubit extends Cubit<SplashState> {
   Future<void> execute() async {
     await Future.delayed(const Duration(milliseconds: 70));
     try {
+      print("validate login");
       final result = await _loginUseCase.validateLogin();
-      if (result) emit(SplashState.existing_user);
+      if (result){
+        print("existing user");
+        emit(SplashState.existing_user);
+      }
     } on AuthException catch (e) {
       if (e.errorCode == AuthErrorCode.no_auth) {
+        print("no auth");
         emit(SplashState.none);
       }
       if (e.errorCode == AuthErrorCode.no_chat_user) {
+        print("new user");
         emit(SplashState.new_user);
       }
     }

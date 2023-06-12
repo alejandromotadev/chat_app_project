@@ -8,6 +8,33 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> _showMyDialog(channel) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Delete Channel"),
+            content: const Text("Are you sure you want to delete this channel?"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text("Cancel"),
+              ),
+              TextButton(
+                onPressed: () {
+                  channel.delete();
+                  Navigator.of(context).pop();
+                },
+                child: const Text("Delete"),
+              ),
+            ],
+          );
+        },
+      );
+    }
     final _controller = StreamChannelListController(
       client: client,
       filter: Filter.in_(
@@ -30,6 +57,11 @@ class HomePage extends StatelessWidget {
               },
             ),
           );
+        },
+        onChannelLongPress: (channel) {
+          print("Long Pressed on channel ${channel.cid}");
+           _showMyDialog(channel);
+
         },
       ),
     );

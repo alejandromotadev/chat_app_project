@@ -38,10 +38,11 @@ class MyApp extends StatelessWidget {
       providers: buildRepositories(_streamChatClient),
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => AppThemeCubit(context.read())..init()),
+          BlocProvider(
+            create: (context) => AppThemeCubit(context.read())..init(),
+          ),
           BlocProvider(
             create: (context) => SplashCubit(context.read())..execute(),
-            //create: (context) => SplashCubit()..execute(),
           ),
           BlocProvider(
             create: (context) => AuthenticationCubit(context.read()),

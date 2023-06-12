@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'package:chat_app/domain/stream_api/repositories/stream_api_repository.dart';
 import 'package:http/http.dart' as http;
-import 'package:chat_app/data/stream_api/repositories/stream_api_repository.dart';
 import 'package:chat_app/domain/chat/entities/chat_user.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
@@ -47,17 +47,21 @@ class StreamApiImpl implements StreamApiRepository {
 
   @override
   Future<String> getToken(String userId) async {
-    //TODO: Implement getToken
-    print("User ID =========>>>>>>>>>>>>>>$userId");
-    final response = await http.post( Uri.http("10.0.2.2:1709", "/token") , body: jsonEncode(<String, String>{"id": userId}),
-      headers: <String, String>{
-        "Content-Type": "application/json; charset=UTF-8",
-      }
-    );
-    final token = jsonDecode(response.body)["token"];
-    print("Token ==========>>>>>>>>>>>>>>>$token");
+    try{
+      print("User ID =========>>>>>>>>>>>>>>$userId");
+      final response = await http.post( Uri.http("10.0.2.2:1709", "/token") , body: jsonEncode(<String, String>{"id": userId}),
+          headers: <String, String>{
+            "Content-Type": "application/json; charset=UTF-8",
+          }
+      );
+      final token = jsonDecode(response.body)["token"];
+      print("Token ==========>>>>>>>>>>>>>>>$token");
+      return token;
+    }catch(e){
+      throw Exception("Error while getting token");
+    }
+
     //final token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoibW90YSJ9.krN1CjYQWHTBa4gZ2cwwyjh-1XhFSMSITkbUtZj5mU0";
-    return token;
   }
 
   @override

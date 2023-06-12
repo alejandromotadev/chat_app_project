@@ -67,7 +67,6 @@ class _WelcomeState extends State<Welcome> {
                                 icon: const Icon(
                                   Icons.camera_alt_rounded,
                                   color: Colors.black,
-
                                 ),
                               ),
                             ),
@@ -105,7 +104,21 @@ class _WelcomeState extends State<Welcome> {
                       ),
                     ),
                     onPressed: () {
-                      context.read<WelcomeVerifyCubit>().startChatting();
+                      if (context
+                              .read<WelcomeVerifyCubit>()
+                              .usernameController
+                              .text
+                              .isEmpty ||
+                          state.file.path.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                                "Please select a group image and a name for your group"),
+                          ),
+                        );
+                      } else {
+                        context.read<WelcomeVerifyCubit>().startChatting();
+                      }
                     },
                     child: const Text("Start chatting now",
                         style: TextStyle(

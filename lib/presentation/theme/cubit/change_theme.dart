@@ -1,4 +1,4 @@
-import 'package:chat_app/data/persistent_storage/repositories/persistent_storage_repository.dart';
+import 'package:chat_app/domain/persistent_storage/repositories/persistent_storage_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppThemeCubit extends Cubit<bool> {

@@ -1,5 +1,4 @@
-
-import 'package:chat_app/data/persistent_storage/repositories/persistent_storage_repository.dart';
+import 'package:chat_app/domain/persistent_storage/repositories/persistent_storage_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PersistentStorageImpl extends PersistentStorageRepository{

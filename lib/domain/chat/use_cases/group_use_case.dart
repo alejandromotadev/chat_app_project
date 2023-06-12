@@ -1,7 +1,6 @@
 import 'dart:io';
-
 import 'package:chat_app/data/attachment/repositories/attachment_repository.dart';
-import 'package:chat_app/data/stream_api/repositories/stream_api_repository.dart';
+import 'package:chat_app/domain/stream_api/repositories/stream_api_repository.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class CreateGroupUseCase {
