@@ -1,3 +1,4 @@
+import 'package:chat_app/controller/network_controller.dart';
 import 'package:chat_app/data/attachment/implementation/attachment_impl.dart';
 import 'package:chat_app/data/attachment/repositories/attachment_repository.dart';
 import 'package:chat_app/data/authentification/implementation/auth_impl.dart';
@@ -13,6 +14,7 @@ import 'package:chat_app/domain/persistent_storage/repositories/persistent_stora
 import 'package:chat_app/domain/profile_sign_in/use_cases/profile_sign_in_use_case.dart';
 import 'package:chat_app/domain/stream_api/repositories/stream_api_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 List<RepositoryProvider> buildRepositories(StreamChatClient client) {
@@ -50,4 +52,10 @@ List<RepositoryProvider> buildRepositories(StreamChatClient client) {
       ),
     ),
   ];
+}
+
+class ControllerInjection{
+  static void init(){
+    Get.put<NetworkController>(NetworkController(),permanent: true);
+  }
 }

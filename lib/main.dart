@@ -18,6 +18,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'firebase_options.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +27,7 @@ void main() async {
   );
 
   runApp(MyApp());
+  ControllerInjection.init();
 }
 
 class MyApp extends StatelessWidget {
@@ -72,7 +74,7 @@ class MyApp extends StatelessWidget {
           ),
         ],
         child: BlocBuilder<AppThemeCubit, bool>(builder: (context, state) {
-          return MaterialApp(
+          return GetMaterialApp(
             title: 'Flutter Demo',
             debugShowCheckedModeBanner: false,
             home: const SplashView(),

@@ -66,14 +66,6 @@ class HomePage extends StatelessWidget {
       body: RefreshIndicator(
         onRefresh: controller.refresh,
         child: StreamChannelListView(
-          errorBuilder: (a, b) {
-            return RefreshIndicator(
-              onRefresh: controller.refresh,
-              child: const Center(
-                child: Text('Connection error, please try again later :('),
-              ),
-            );
-          },
           controller: controller,
           itemBuilder: (context, channels, index, defaultTile) {
             return InkWell(
