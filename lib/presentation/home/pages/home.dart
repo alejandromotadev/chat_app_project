@@ -20,39 +20,6 @@ class HomePage extends StatelessWidget {
         },
       );
     }
-
-    Future<void> deleteChat(channels, index) {
-      return showDialog<void>(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text("Delete Channel"),
-            content:
-                const Text("Are you sure you want to delete this channel?"),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  print("cancel");
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Cancel"),
-              ),
-              TextButton(
-                onPressed: ()  {
-                  print("delete");
-                  channels[index].delete();
-                  Navigator.of(context).pop();
-                },
-                child: const Text(
-                  "Delete",
-                  style: TextStyle(color: Colors.red),
-                ),
-              ),
-            ],
-          );
-        },
-      );
-    }
     final controller = StreamChannelListController(
       eventHandler: StreamChannelListEventHandler(),
       client: client,
@@ -79,9 +46,6 @@ class HomePage extends StatelessWidget {
                   },
                 ),
               );
-            },
-            onLongPress: () {
-              deleteChat(channels, index);
             },
             child: ListTile(
               title: StreamChannelName(

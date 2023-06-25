@@ -76,7 +76,7 @@ class StreamApiImpl implements StreamApiRepository {
   @override
   Future<Channel> createSimpleChat(String friendId) async {
     final channel = _client.channel("messaging",
-        //id: '${_client.state.currentUser?.id.hashCode}${friendId.hashCode}',
+        id: '${_client.state.currentUser?.id.hashCode}${friendId.hashCode}',
         extraData: {
           "members": [
             friendId,
