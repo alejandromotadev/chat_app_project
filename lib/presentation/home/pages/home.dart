@@ -63,53 +63,50 @@ class HomePage extends StatelessWidget {
       limit: 20,
     );
     return Scaffold(
-      body: RefreshIndicator(
-        onRefresh: controller.refresh,
-        child: StreamChannelListView(
-          controller: controller,
-          itemBuilder: (context, channels, index, defaultTile) {
-            return InkWell(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return StreamChannel(
-                        showLoading: true,
-                        channel: channels[index],
-                        child: const ChatPage(),
-                      );
-                    },
-                  ),
-                );
-              },
-              onLongPress: () {
-                deleteChat(channels, index);
-              },
-              child: ListTile(
-                title: StreamChannelName(
-                  channel: channels[index],
-                  textStyle: StreamChannelPreviewTheme.of(context).titleStyle,
-                ),
-                subtitle: ChannelListTileSubtitle(
-                  channel: channels[index],
-                  textStyle:
-                      StreamChannelPreviewTheme.of(context).subtitleStyle,
-                ),
-                leading: InkWell(
-                  onTap: () {
-                    showImage(channels, index);
+      body: StreamChannelListView(
+        controller: controller,
+        itemBuilder: (context, channels, index, defaultTile) {
+          return InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return StreamChannel(
+                      showLoading: true,
+                      channel: channels[index],
+                      child: const ChatPage(),
+                    );
                   },
-                  child: StreamChannelAvatar(channel: channels[index]),
                 ),
-                trailing: ChannelLastMessageDate(
-                  channel: channels[index],
-                  textStyle:
-                      StreamChannelPreviewTheme.of(context).lastMessageAtStyle,
-                ),
+              );
+            },
+            onLongPress: () {
+              deleteChat(channels, index);
+            },
+            child: ListTile(
+              title: StreamChannelName(
+                channel: channels[index],
+                textStyle: StreamChannelPreviewTheme.of(context).titleStyle,
               ),
-            );
-          },
-        ),
+              subtitle: ChannelListTileSubtitle(
+                channel: channels[index],
+                textStyle:
+                    StreamChannelPreviewTheme.of(context).subtitleStyle,
+              ),
+              leading: InkWell(
+                onTap: () {
+                  showImage(channels, index);
+                },
+                child: StreamChannelAvatar(channel: channels[index]),
+              ),
+              trailing: ChannelLastMessageDate(
+                channel: channels[index],
+                textStyle:
+                    StreamChannelPreviewTheme.of(context).lastMessageAtStyle,
+              ),
+            ),
+          );
+        },
       ),
     );
   }
