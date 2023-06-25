@@ -10,7 +10,8 @@ class ChatUserState{
 }
 
 class GroupSelectionState{
-  const GroupSelectionState(this.file, {required this.channel});
+  const GroupSelectionState(this.file, {this.isLoading=false, required this.channel} );
   final File file;
   final Channel channel;
+  final bool isLoading;
 }

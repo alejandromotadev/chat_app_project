@@ -8,34 +8,53 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> _showMyDialog(channel) async {
+    Future<void> showImage(channels, index) {
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Center(
+            child: StreamChannelAvatar(
+              channel: channels[index],
+            ),
+          );
+        },
+      );
+    }
+
+    Future<void> deleteChat(channels, index) {
       return showDialog<void>(
         context: context,
-        barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text("Delete Channel"),
-            content: const Text("Are you sure you want to delete this channel?"),
+            content:
+                const Text("Are you sure you want to delete this channel?"),
             actions: [
               TextButton(
                 onPressed: () {
+                  print("cancel");
                   Navigator.of(context).pop();
                 },
                 child: const Text("Cancel"),
               ),
               TextButton(
-                onPressed: () {
-                  channel.delete();
+                onPressed: ()  {
+                  print("delete");
+                  channels[index].delete();
                   Navigator.of(context).pop();
                 },
-                child: const Text("Delete"),
+                child: const Text(
+                  "Delete",
+                  style: TextStyle(color: Colors.red),
+                ),
               ),
             ],
           );
         },
       );
     }
-    final _controller = StreamChannelListController(
+    final controller = StreamChannelListController(
+      eventHandler: StreamChannelListEventHandler(),
       client: client,
       filter: Filter.in_(
         'members',
@@ -44,25 +63,61 @@ class HomePage extends StatelessWidget {
       limit: 20,
     );
     return Scaffold(
-      body: StreamChannelListView(
-        controller: _controller,
-        onChannelTap: (channel) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return StreamChannel(
-                  channel: channel,
-                  child: const ChatPage(),
+      body: RefreshIndicator(
+        onRefresh: controller.refresh,
+        child: StreamChannelListView(
+          errorBuilder: (a, b) {
+            return RefreshIndicator(
+              onRefresh: controller.refresh,
+              child: const Center(
+                child: Text('Connection error, please try again later :('),
+              ),
+            );
+          },
+          controller: controller,
+          itemBuilder: (context, channels, index, defaultTile) {
+            return InkWell(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return StreamChannel(
+                        showLoading: true,
+                        channel: channels[index],
+                        child: const ChatPage(),
+                      );
+                    },
+                  ),
                 );
               },
-            ),
-          );
-        },
-        onChannelLongPress: (channel) {
-          print("Long Pressed on channel ${channel.cid}");
-           _showMyDialog(channel);
-
-        },
+              onLongPress: () {
+                deleteChat(channels, index);
+              },
+              child: ListTile(
+                title: StreamChannelName(
+                  channel: channels[index],
+                  textStyle: StreamChannelPreviewTheme.of(context).titleStyle,
+                ),
+                subtitle: ChannelListTileSubtitle(
+                  channel: channels[index],
+                  textStyle:
+                      StreamChannelPreviewTheme.of(context).subtitleStyle,
+                ),
+                leading: InkWell(
+                  onTap: () {
+                    showImage(channels, index);
+                  },
+                  child: StreamChannelAvatar(channel: channels[index]),
+                ),
+                trailing: ChannelLastMessageDate(
+                  channel: channels[index],
+                  textStyle:
+                      StreamChannelPreviewTheme.of(context).lastMessageAtStyle,
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

@@ -21,7 +21,8 @@ List<RepositoryProvider> buildRepositories(StreamChatClient client) {
         create: (context) => StreamApiImpl(client)),
     RepositoryProvider<PersistentStorageRepository>(
         create: (context) => PersistentStorageImpl()),
-    RepositoryProvider<AuthRepository>(create: (context) => AuthImpl()),
+    RepositoryProvider<AuthRepository>(
+        create: (context) => AuthImpl()),
     RepositoryProvider<UploadStorageRepository>(
         create: (context) => UploadStorageImpl()),
     RepositoryProvider<ImagePickerRepository>(

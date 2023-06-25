@@ -8,7 +8,6 @@ class StreamApiImpl implements StreamApiRepository {
   StreamApiImpl(this._client);
   final StreamChatClient _client;
 
-
   @override
   Future<ChatUser> connectUser(ChatUser user, String token) async {
     Map<String, dynamic> extraData = {};
@@ -41,27 +40,25 @@ class StreamApiImpl implements StreamApiRepository {
           ),
         )
         .toList();
-    print("MY CHAT USERS =========>>>>>>>>>>>>>>$chatUsers");
     return chatUsers;
   }
 
   @override
   Future<String> getToken(String userId) async {
-    try{
-      print("User ID =========>>>>>>>>>>>>>>$userId");
-      final response = await http.post( Uri.http("10.0.2.2:1709", "/token") , body: jsonEncode(<String, String>{"id": userId}),
+    try {
+      final token = _client.devToken(userId).rawValue;
+      //44.212.243.195
+      /*final response = await http.post(Uri.http("44.212.243.195", "/token"),
+          body: jsonEncode(<String, String>{"id": userId}),
           headers: <String, String>{
             "Content-Type": "application/json; charset=UTF-8",
-          }
-      );
-      final token = jsonDecode(response.body)["token"];
-      print("Token ==========>>>>>>>>>>>>>>>$token");
+          });*/
+      //final token = jsonDecode(response.body)["token"];
+      print(token);
       return token;
-    }catch(e){
-      throw Exception("Error while getting token");
+    } catch (e) {
+      throw Exception("Error while getting token ======> {$e}");
     }
-
-    //final token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoibW90YSJ9.krN1CjYQWHTBa4gZ2cwwyjh-1XhFSMSITkbUtZj5mU0";
   }
 
   @override
@@ -79,7 +76,7 @@ class StreamApiImpl implements StreamApiRepository {
   @override
   Future<Channel> createSimpleChat(String friendId) async {
     final channel = _client.channel("messaging",
-        id: '${_client.state.currentUser?.id.hashCode}${friendId.hashCode}',
+        //id: '${_client.state.currentUser?.id.hashCode}${friendId.hashCode}',
         extraData: {
           "members": [
             friendId,
@@ -102,6 +99,6 @@ class StreamApiImpl implements StreamApiRepository {
     if (_client.state.currentUser == null) {
       return false;
     }
-    return  _client.state.currentUser != null;
+    return _client.state.currentUser != null;
   }
 }

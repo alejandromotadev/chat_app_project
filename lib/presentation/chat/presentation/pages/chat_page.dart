@@ -8,52 +8,21 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  StreamChannelHeader(
+      appBar: StreamChannelHeader(
         showBackButton: true,
-        onBackPressed: (){
-          pushToPageWithReplacement(context, '/home');
+        onBackPressed: () {
+          pushToPageWithReplacement(context, '/navigation');
         },
       ),
-      body: Column(
+      body: const Column(
         children: [
-          Expanded(
-            child: (StreamMessageListView(
-              threadBuilder: (_, parentMessage) {
-                return ThreadPage(
-                  parent: parentMessage,
-                );
-              },
-            )),
+          Flexible(
+            child: (StreamMessageListView()),
           ),
-          const StreamMessageInput(),
-        ],
-      ),
-    );
-  }
-}
-
-class ThreadPage extends StatelessWidget {
-  const ThreadPage({
-    Key? key,
-    this.parent,
-  }) : super(key: key);
-
-  final Message? parent;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: StreamThreadHeader(
-        parent: parent!,
-      ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: StreamMessageListView(
-              parentMessage: parent,
-            ),
+          StreamMessageInput(
+            actionsLocation: ActionsLocation.rightInside,
+            autoCorrect: true,
           ),
-          const StreamMessageInput(),
         ],
       ),
     );

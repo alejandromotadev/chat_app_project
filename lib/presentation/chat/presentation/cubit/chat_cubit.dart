@@ -11,7 +11,8 @@ class FriendSelectionCubit extends Cubit<List<ChatUserState>> {
   FriendSelectionCubit(this._streamApiRepository) : super([]);
   final StreamApiRepository _streamApiRepository;
 
-  List<ChatUserState> get selectedUsers => state.where((ChatUserState e) => e.selected).toList();
+  List<ChatUserState> get selectedUsers =>
+      state.where((ChatUserState e) => e.selected).toList();
 
   Future<void> init() async {
     final list = (await _streamApiRepository.getChatUsers())
@@ -21,8 +22,10 @@ class FriendSelectionCubit extends Cubit<List<ChatUserState>> {
   }
 
   void selectUser(ChatUserState chatUser) {
-    final index = state.indexWhere((ChatUserState e) => e.chatUser.id == chatUser.chatUser.id);
-    state[index] = ChatUserState(state[index].chatUser, selected: !chatUser.selected);
+    final index = state
+        .indexWhere((ChatUserState e) => e.chatUser.id == chatUser.chatUser.id);
+    state[index] =
+        ChatUserState(state[index].chatUser, selected: !chatUser.selected);
     emit(List<ChatUserState>.from(state));
   }
 
@@ -58,8 +61,14 @@ class GroupSelectionCubit extends Cubit<GroupSelectionState> {
   final ImagePickerRepository _imagePickerRepository;
 
   void createGroup() async {
-    print("create group");
-    try{
+    emit(GroupSelectionState(state.file,
+        isLoading: true,
+        channel: Channel(
+          StreamChatClient(""),
+          "",
+          "",
+        )));
+    try {
       final channel = await _createGroupUseCase.createGroup(
         CreateGroupInput(
           imageFile: state.file,
@@ -67,23 +76,20 @@ class GroupSelectionCubit extends Cubit<GroupSelectionState> {
           members: members.map((e) => e.chatUser.id).toList(),
         ),
       );
-      emit(GroupSelectionState(state.file, channel: channel));
+      emit(GroupSelectionState(state.file, channel: channel, isLoading: true));
       print("channel created");
     } catch (e) {
       print(e);
     }
-
   }
 
   void pickImage() async {
-    try{
+    try {
       print("pick image chat cubit");
       final image = await _imagePickerRepository.pickImage();
       emit(GroupSelectionState(image, channel: state.channel));
     } catch (e) {
       print(e);
     }
-
   }
-
 }

@@ -1,3 +1,4 @@
+import 'package:chat_app/presentation/chat/presentation/pages/friend_selection.dart';
 import 'package:chat_app/presentation/home/pages/home.dart';
 import 'package:chat_app/presentation/navigation/presentation/cubits/navigation.dart';
 import 'package:chat_app/presentation/settings/presentation/pages/settings.dart';
@@ -13,49 +14,70 @@ class NavigationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screens = [
-      HomePage(
-        client: client,
-      ),
+      HomePage(client: client),
+      FriendSelectionPage(client: client),
       const SettingsPage()
     ];
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Based Chat"),
-        automaticallyImplyLeading: false,
-      ),
       bottomNavigationBar: BlocBuilder<NavigationCubit, int>(
         builder: (context, state) {
           return BottomNavigationBar(
+            enableFeedback: false,
             currentIndex: context.read<NavigationCubit>().state,
             onTap: (index) {
               context.read<NavigationCubit>().changePage(index);
             },
             items: const [
               BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: "Home",
+                icon: Text(
+                  "home",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                label: "",
+                activeIcon: Text(
+                  "home",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.blueAccent),
+                ),
               ),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.settings), label: "Settings")
+                icon: Text(
+                  "contacts",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                label: "",
+                activeIcon: Text(
+                  "contacts",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.blueAccent),
+                ),
+              ),
+              BottomNavigationBarItem(
+                icon: Text(
+                  "settings",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                label: "",
+                activeIcon: Text(
+                  "settings",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.blueAccent),
+                ),
+              ),
             ],
           );
         },
       ),
-      body: BlocBuilder<NavigationCubit, int>(
-        builder: (context, state) {
-          return IndexedStack(
-            index: context.read<NavigationCubit>().state,
-            children: screens,
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          pushToPage(context, "/friend_selection");
-        },
-        backgroundColor: Colors.blueAccent,
-        child: const Icon(Icons.chat),
+      body: SafeArea(
+        child: BlocBuilder<NavigationCubit, int>(
+          builder: (context, state) {
+            return IndexedStack(
+              index: context.read<NavigationCubit>().state,
+              children: screens,
+            );
+          },
+        ),
       ),
     );
   }

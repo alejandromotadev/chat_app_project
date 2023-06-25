@@ -73,16 +73,10 @@ class FriendSelectionPage extends StatelessWidget {
                     ],
                   )
                 else
-                  Row(
+                 const Row(
                     children: [
-                      BackButton(
-                        onPressed: () => pushToPage(context, "/navigation"),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      const Text("Select contact",
-                          style: TextStyle(fontSize: 20)),
+                       Text("Select contact",
+                          style: TextStyle(fontSize: 16)),
                     ],
                   ),
                 if (!isGroup)
@@ -103,9 +97,9 @@ class FriendSelectionPage extends StatelessWidget {
                     hoverColor: Colors.blueAccent.withOpacity(0.2),
                   )
                 else if (isGroup && selectedUsers.isEmpty)
-                  Column(
+                   const Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Text("Add a friend"),
                     ],
                   )
