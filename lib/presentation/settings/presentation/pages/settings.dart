@@ -1,6 +1,6 @@
 import 'package:chat_app/presentation/settings/presentation/cubit/settings_cubit.dart';
 import 'package:chat_app/presentation/theme/cubit/change_theme.dart';
-import 'package:chat_app/routes/navigator_utils.dart';
+import 'package:chat_app/controller/navigator_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';

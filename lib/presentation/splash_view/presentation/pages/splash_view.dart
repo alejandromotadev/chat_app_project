@@ -1,6 +1,6 @@
 import 'package:chat_app/presentation/splash_view/presentation/cubit/splash_cubit.dart';
 import 'package:chat_app/presentation/splash_view/presentation/cubit/splash_state.dart';
-import 'package:chat_app/routes/navigator_utils.dart';
+import 'package:chat_app/controller/navigator_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,13 +24,13 @@ class SplashView extends StatelessWidget {
           pushToPageWithReplacement(context, "/welcome");
         }
       },
-      child: Scaffold(
+      child: const Scaffold(
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
                Text(
-                "Splash View",
+                "BasedChat",
                 style: TextStyle(fontSize: 28),
               )
             ],

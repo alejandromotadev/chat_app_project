@@ -2,7 +2,6 @@ import 'package:chat_app/presentation/chat/presentation/cubit/chat_cubit.dart';
 import 'package:chat_app/presentation/chat/presentation/cubit/chat_state.dart';
 import 'package:chat_app/presentation/chat/presentation/pages/chat_page.dart';
 import 'package:chat_app/presentation/chat/presentation/pages/group_selection.dart';
-import 'package:chat_app/routes/navigator_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
@@ -75,34 +74,47 @@ class FriendSelectionPage extends StatelessWidget {
                 else
                  const Row(
                     children: [
-                       Text("Select contact",
-                          style: TextStyle(fontSize: 16)),
+                       Padding(
+                         padding: EdgeInsets.symmetric(vertical: 10),
+                         child: Text("Select contact",
+                            style: TextStyle(fontSize: 16)),
+                       ),
                     ],
                   ),
                 if (!isGroup)
-                  ListTile(
-                    leading: const CircleAvatar(
-                      backgroundColor: Colors.blueAccent,
-                      maxRadius: 20,
-                      child: Icon(
-                        Icons.group,
-                        size: 25,
-                        color: Colors.white,
-                      ),
-                    ),
-                    title: const Text("New Group"),
-                    onTap: () {
-                      context.read<FriendsGroupCubit>().changeState();
-                    },
-                    hoverColor: Colors.blueAccent.withOpacity(0.2),
-                  )
-                else if (isGroup && selectedUsers.isEmpty)
-                   const Column(
-                    mainAxisSize: MainAxisSize.min,
+                  Column(
                     children: [
-                      Text("Add a friend"),
+                      ListTile(
+                        leading: const CircleAvatar(
+                          backgroundColor: Colors.blueAccent,
+                          maxRadius: 20,
+                          child: Icon(
+                            Icons.group,
+                            size: 25,
+                            color: Colors.white,
+                          ),
+                        ),
+                        title: const Text("New Group"),
+                        onTap: () {
+                          context.read<FriendsGroupCubit>().changeState();
+                        },
+                        hoverColor: Colors.blueAccent.withOpacity(0.2),
+                      ),
+                      const ListTile(
+                        title:  Text("contacts"),
+                      )
                     ],
                   )
+                else if (isGroup && selectedUsers.isEmpty)
+                   const Padding(
+                     padding: EdgeInsets.symmetric(vertical: 10),
+                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text("Add a friend"),
+                      ],
+                  ),
+                   )
                 else
                   SizedBox(
                     height: 100,

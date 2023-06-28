@@ -1,6 +1,6 @@
 import 'package:chat_app/presentation/authentication/presentation/cubit/authentication_cubit.dart';
 import 'package:chat_app/presentation/authentication/presentation/cubit/authentication_state.dart';
-import 'package:chat_app/routes/navigator_utils.dart';
+import 'package:chat_app/controller/navigator_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

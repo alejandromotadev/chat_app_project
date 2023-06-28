@@ -20,6 +20,7 @@ class HomePage extends StatelessWidget {
         },
       );
     }
+
     final controller = StreamChannelListController(
       eventHandler: StreamChannelListEventHandler(),
       client: client,
@@ -32,6 +33,51 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: StreamChannelListView(
         controller: controller,
+        errorBuilder: (p0, p1) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.error_outline_rounded,
+                  size: 36,
+                  color: Colors.red,
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    "Something happened beyond our hands, try again later",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(200, 50),
+                    maximumSize: const Size(300, 50),
+                    backgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  onPressed: () async {
+                    await controller.refresh();
+                  },
+                  child: const Text(
+                    "Refresh",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              ],
+            ),
+          );
+        },
         itemBuilder: (context, channels, index, defaultTile) {
           return InkWell(
             onTap: () {
@@ -54,8 +100,7 @@ class HomePage extends StatelessWidget {
               ),
               subtitle: ChannelListTileSubtitle(
                 channel: channels[index],
-                textStyle:
-                    StreamChannelPreviewTheme.of(context).subtitleStyle,
+                textStyle: StreamChannelPreviewTheme.of(context).subtitleStyle,
               ),
               leading: InkWell(
                 onTap: () {

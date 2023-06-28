@@ -1,4 +1,4 @@
-import 'package:chat_app/routes/navigator_utils.dart';
+import 'package:chat_app/controller/navigator_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
