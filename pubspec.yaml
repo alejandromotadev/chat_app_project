@@ -50,6 +50,8 @@ dependencies:
   google_sign_in: ^6.1.4
   firebase_storage: ^11.2.2
   get: ^4.6.5
+  syncfusion_flutter_pdfviewer: ^21.2.10
+  geolocator: ^9.0.2
 
 dev_dependencies:
   flutter_test:
